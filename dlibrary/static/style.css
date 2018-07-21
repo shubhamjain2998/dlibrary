@@ -1,0 +1,89 @@
+#myVideo {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+}
+.crd{
+    background-color: #823e14;
+}
+#ig{
+    opacity: 0.9;
+}
+h1{
+    font-family: 'Raleway', sans-serif;
+}
+#head{
+    font-family: 'Raleway', sans-serif;
+}
+.head3:hover{
+    background-color: lightgrey;
+}
+.txt2{
+	text-align: center;
+	background-color: #333333;
+	font-size: 18px;
+	font-weight: bold;
+	color: white;
+	text-shadow: black 2px 2px 2px;
+	padding: 4px;
+}
+.bimg{
+    background-image: url("images/banner4.jpg");
+    background-repeat: repeat-x;
+	background-size: cover;
+}
+.footer{
+    background-repeat: repeat-x;
+    background-size: cover;
+}
+.link1,.link2,.link3{
+    color: white;
+}
+.link1:hover{
+    color: dodgerblue;
+}
+.link2:hover{
+    color: #f95e3b;
+}
+.link3:hover{
+    color: orangered;
+}
+li.borderless {
+    border: 0 none;
+}
+.front{
+    height:600px;
+    width: 800px;
+}
+.mbile{
+    justify-content: center;
+    display: flex;
+}
+@media (max-width: 576px) {
+    h2.sd{
+        font-size: 1rem;
+    }
+    .front{
+        height: 100vh;
+        width: 800px;
+    }
+    .hja{
+        margin-right: -20px;
+        overflow-x: hidden;
+    }
+    .fa-3x{
+        font-size: 2em;
+    }
+    h5.sd{
+        font-size: 0.9rem;
+    }
+    .loginsd{
+        justify-content: start;
+    }
+    .mbile{
+        display: flex;
+        justify-content: left;
+    }
+}

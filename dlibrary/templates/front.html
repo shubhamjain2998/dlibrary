@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'style.css' %} " type="text/css">
+    <link rel="stylesheet" href="{% static 'vendor/bs/css/bootstrap.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'vendor/fa/css/fontawesome.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <script src="{% static 'vendor/jquery.js' %}"></script>
+    <script src="{% static 'vendor/popper.js' %}"></script>
+    <script src="{% static 'vendor/bs/js/bootstrap.min.js' %}"></script>
+</head>
+<body>
+<div>
+    <video autoplay muted loop id="myVideo" poster="{% static 'images/dvideo1.png' %}">
+        <source src="{% static 'videos/dvideo1.mp4' %}" type="video/mp4">
+        <source src="{% static 'videos/dvideo1.ogv' %}" type="video/ogg">
+        <source src="{% static 'videos/dvideo1.webm' %}" type="video/webm">
+    </video>
+</div>
+<div class="container d-flex align-items-center justify-content-center front">
+    <div class="row d-flex align-items-center justify-content-center">
+        <div class="col-md-12 bg-light"style="opacity: 0.7" >
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="text-center text-black text-uppercase"
+                    style="letter-spacing: 3px; font-size: 45px;font-family: 'Raleway', sans-serif;font-weight: bold">
+                        Welcome to Digital Library</h1>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-12">
+                    <div>
+                        <div>
+                            <p class="text-uppercase text-center"
+                                style="color: black; font-size: 25px;letter-spacing: 1px;font-family: 'Raleway', sans-serif;">
+                                A trained librarian is a powerful search engine
+                            </p>
+                        </div>
+                        <div class="d-flex justify-content-center mt-3">
+                            <button type="button" class="btn btn-outline-info">
+{#                                <a href="http://google.co.in" class="card-link"#}
+{#                                style="font-size: 25px; font-weight: 400; letter-spacing:2px; color: black ">#}
+                                <a href="{% url 'hme' %}" class="card-link"
+                                style="font-size: 25px; font-weight: 400; letter-spacing:2px; color: black ">
+                                    GET STARTED
+                                </a>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="jumbotron bg-transparent pb-0">
+        <h1 class="text-center" style="font-family: 'Raleway', sans-serif;">
+            Books List</h1>
+        <hr>
+    </div>
+    <div class="container">
+        <div class="row">
+            {%  for n1 in object_list %}
+                <div class="col-sm-4 head3 clickable-row pt-5"data-href="{% url 'bdet' n1.id %}">
+                    <div class="d-flex justify-content-center mb-3">
+                        <img class="img-fluid" src="/media/{{n1.image}}" alt="">
+                    </div>
+                    <h4 class="text-center text-uppercase">
+                                {{ n1.name }}
+                    </h4>
+                    <p class="text-center">{{ n1.course }}</p>
+                </div>
+            {%  endfor %}
+        </div>
+    </div>
+{% endblock %}

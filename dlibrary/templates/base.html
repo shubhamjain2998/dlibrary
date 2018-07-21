@@ -1,0 +1,186 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Digital Library{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'vendor/bs/css/bootstrap.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'vendor/fa/css/all.css' %}">
+    <link rel="stylesheet" href="{% static 'style.css' %} " type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <script src="{% static 'vendor/jquery.js' %}"></script>
+    <script src="{% static 'vendor/popper.js' %}"></script>
+    <script src="{% static 'vendor/bs/js/bootstrap.min.js' %}"></script>
+    <script>
+    jQuery(document).ready(function($) {
+        $(".clickable-row").click(function() {
+            window.location = $(this).data("href");
+        });
+        $("#reg #id_username").on("input", function(){
+            $.get("/library/chkstu?name="+$(this).val(), function(data, status){
+                {#ele = document.getElementById("regbtn");#}
+                if(data===null || data === ''){
+                    $('#regbtn').prop('disabled', false);
+                    $('.text-danger').addClass('text-success').removeClass('text-danger');
+                    $("#err1").html('<i class="fa fa-1x fa-check-circle"></i> '+ 'Username');
+                }
+                else {
+                    $('#regbtn').prop('disabled', true);
+                    $('.text-success').addClass('text-danger').removeClass('text-success');
+                    $("#err1").html('<i class="fa fa-1x fa-times"></i> '+ data);
+                }
+            });
+        });
+        $("#reg #id_email").on("input", function(){
+            $.get("/library/chkeml?email="+$(this).val(), function(data, status){
+                {#ele = document.getElementById("regbtn");#}
+                if(data===null || data === ''){
+                    $('#regbtn').prop('disabled', false);
+                    $('.text-danger').addClass('text-success').removeClass('text-danger');
+                    $("#err4").html('<i class="fa fa-1x fa-check-circle"></i> '+ 'Email');
+                }
+                else {
+                    $('#regbtn').prop('disabled', true);
+                    $('.text-success').addClass('text-danger').removeClass('text-success');
+                    $("#err4").html('<i class="fa fa-1x fa-times"></i> '+ data);
+                }
+            });
+        });
+    });
+    </script>
+</head>
+<body class="bimg">
+<div class="hja">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="{% url 'hme' %}">Digital Library</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'hme' %}">Home <span class="sr-only">(current)</span></a>
+      </li>
+{#      <li class="nav-item">#}
+{#        <a class="nav-link" href="{% url 'about' %}">About</a>#}
+{#      </li>#}
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Select Branch
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{% url 'cse' %}">Computer Science</a>
+            <a class="dropdown-item" href="{% url 'it' %}">Information Technology</a>
+            <a class="dropdown-item" href="{% url 'mech' %}">Mechanical</a>
+            <a class="dropdown-item" href="{% url 'civil' %}">Civil</a>
+            <a class="dropdown-item" href="{% url 'etc' %}">Electronics and Telecommunication</a>
+            <a class="dropdown-item" href="{% url 'eee' %}">Electrical</a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'feed' %}">Contact Us</a>
+      </li>
+    </ul>
+      <div class="mbile mr-auto ml-3">
+        <form class="form-inline my-2 my-lg-0" action="{% url 'blist' %}">
+          <input class="form-control mr-sm-2" type="search" placeholder="Search a book with name" name="si" aria-label="Search">
+          <button  class="btn btn-outline-success my-2 my-sm-0 text-white" type="submit">
+              Search
+          </button>
+        </form>
+      </div>
+      <div class="mbile ml-auto">
+        {% if user.is_superuser  %}
+            <a href="/admin">
+                <button class="btn btn-outline-success  mr-2 my-sm-0 text-white" type="button">
+                        Admin
+                </button>
+            </a>
+        {% endif %}
+          {% if user.is_authenticated %}
+{#              <a href="/accounts/logout/?next=/library/home">#}
+{#                <button class="btn btn-outline-success my-2 mr-2 my-sm-0 text-white" type="button">#}
+{#                    Logout#}
+{#                </button>#}
+{#              </a>#}
+{#              <a href="{% url 'auth_password_change' %}">#}
+{#                <button class="btn btn-outline-success my-2 my-sm-0 text-white" type="button">#}
+{#                    Change Password#}
+{#                </button>#}
+{#              </a>#}
+              <div class="dropdown">
+                  <button class="btn btn-outline-success dropdown-toggle text-white" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Welcome, {{ user }} <span><i class="fa fa-user"></i></span>
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <div class="d-flex justify-content-center"><i class="fa fa-4x fa-user-circle" aria-hidden="true"></i></div>
+                      <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/accounts/logout/?next=/library/home">Logout</a>
+                    <a class="dropdown-item" href="{% url 'auth_password_change' %}">Change Password</a>
+                  </div>
+              </div>
+          {% else %}
+              <a href="/accounts/login/?next=/library/home/">
+                  <button class="btn btn-outline-success my-2 mx-2 my-sm-0 text-white" type="button">
+                      Login
+                  </button>
+              </a>
+              <a href="/accounts/register/?next=/library/home/">
+                  <button class="btn btn-outline-success my-2 my-sm-0 text-white" type="button">
+                      Register
+                  </button>
+              </a>
+          {% endif %}
+      </div>
+  </div>
+</nav>
+{% block content %}
+{% endblock %}
+ <div class="container-fluid footer pb-3 mt-5 bg-dark">
+    <div class="row pt-3">
+        <div class="col-sm-2">
+            <img class="img-fluid" src="{% static 'images/logo1.png' %}" alt="logo">
+        </div>
+        <div class="col-sm-4 d-flex justify-content-center">
+            <div>
+                <h4 class="text-center text-white" style="font-family: 'Raleway', sans-serif";>About Digital Library</h4>
+                <ul class="list-group border-0 mt-2">
+					<li class="list-group-item-text bg-dark text-white">
+                        Promote efficient delivery of information economically to all users.
+                    </li>
+					<li class="list-group-item-text bg-dark text-white">
+                        Take leadership role in the generation and dissemination of knowledge.
+                    </li>
+					<li class="list-group-item-text bg-dark text-white">
+                        Improve the utilisation of digital technologies to provide authentic experiential learning opportunities.
+                    </li>
+					<li class="list-group-item-text bg-dark text-white">
+                        Spreading Digital Literacy.
+                    </li>
+                    <li class="list-group-item-text bg-dark text-white">
+                        Spreading Digital Literacy.
+                    </li>
+				</ul>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <h4 class="text-center text-white" style="font-family: 'Raleway', sans-serif";>Follow Digital Library</h4>
+            <div class="d-flex justify-content-center mt-5">
+                <a class="pr-4 link1" href="#"><i class="fab fa-3x fa-facebook"></i></a>
+                <a class="pr-4 link1" href="#"><i class="fab fa-3x fa-twitter"></i></a>
+                <a class="pr-4 link2" href="#"><i class="fab fa-3x fa-youtube"></i></a>
+                <a class="pr-4 link2" href="#"><i class="fab fa-3x fa-google-plus"></i></a>
+                <a class="pr-4 link2" href="#"><i class="fab fa-3x fa-pinterest"></i></a>
+                <a class="pr-4 link3" href="#"><i class="fab fa-3x fa-instagram"></i></a>
+            </div>
+        </div>
+    </div>
+    <h6 class="text-center text-white sd mt-3 font-weight-light">
+        Copyright <i class="fa fa-1x fa-copyright"></i> 2018, Digital Library | Developed by Shubham Jain
+    </h6>
+    </div>
+</div>
+</body>
+</html>
