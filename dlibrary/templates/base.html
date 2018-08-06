@@ -3,7 +3,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <title>{% block title %}Digital Library{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'vendor/bs/css/bootstrap.min.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'vendor/fa/css/all.css' %}">
@@ -14,39 +15,78 @@
     <script src="{% static 'vendor/bs/js/bootstrap.min.js' %}"></script>
     <script>
     jQuery(document).ready(function($) {
+        let uid = true;
+        let uemail = true;
+        let pd = true;
+        function checkPasswordMatch() {
+            let password = $("#reg #id_password1").val();
+            let confirmPassword = $("#reg #id_password2").val();
+            if (password !== confirmPassword){
+                pd = false;
+                $('.pwd').addClass('text-danger').removeClass('text-success');
+                $("#passwordcheckmatch").html('<i class="fa fa-1x fa-times"></i> '+'Passwords do not match!');
+            }
+            else if(password === confirmPassword && password === "") {
+                $('.pwd').addClass('text-success').removeClass('text-danger');
+                $("#passwordcheckmatch").html('');
+                pd = false;
+            }
+            else {
+                $('.pwd').addClass('text-success').removeClass('text-danger');
+                $("#passwordcheckmatch").html('<i class="fa fa-1x fa-check-circle"></i> ' + 'Passwords match');
+                pd = true;
+            }
+            if(uid === true && uemail === true && pd === true){
+            $('#reg #regbtn').prop('disabled', false);
+            }
+            else {
+                $('#reg #regbtn').prop('disabled', true);
+            }
+        }
         $(".clickable-row").click(function() {
             window.location = $(this).data("href");
         });
         $("#reg #id_username").on("input", function(){
             $.get("/library/chkstu?name="+$(this).val(), function(data, status){
-                {#ele = document.getElementById("regbtn");#}
                 if(data===null || data === ''){
-                    $('#regbtn').prop('disabled', false);
-                    $('.text-danger').addClass('text-success').removeClass('text-danger');
-                    $("#err1").html('<i class="fa fa-1x fa-check-circle"></i> '+ 'Username');
+                    $('.usr').addClass('text-success').removeClass('text-danger');
+                    $('#err1').html('');
+                    uid = true;
                 }
                 else {
-                    $('#regbtn').prop('disabled', true);
-                    $('.text-success').addClass('text-danger').removeClass('text-success');
+                    uid = false;
+                    $('.usr').addClass('text-danger').removeClass('text-success');
                     $("#err1").html('<i class="fa fa-1x fa-times"></i> '+ data);
                 }
             });
+            if(uid === true && uemail === true && pd === true){
+            $('#reg #regbtn').prop('disabled', false);
+            }
+            else {
+                $('#reg #regbtn').prop('disabled', true);
+            }
         });
         $("#reg #id_email").on("input", function(){
             $.get("/library/chkeml?email="+$(this).val(), function(data, status){
-                {#ele = document.getElementById("regbtn");#}
                 if(data===null || data === ''){
-                    $('#regbtn').prop('disabled', false);
-                    $('.text-danger').addClass('text-success').removeClass('text-danger');
-                    $("#err4").html('<i class="fa fa-1x fa-check-circle"></i> '+ 'Email');
+                    $('.eml').addClass('text-success').removeClass('text-danger');
+                    $("#err4").html('');
+                    uemail = true;
                 }
                 else {
-                    $('#regbtn').prop('disabled', true);
-                    $('.text-success').addClass('text-danger').removeClass('text-success');
+                    uemail = false;
+                    $('.eml').addClass('text-danger').removeClass('text-success');
                     $("#err4").html('<i class="fa fa-1x fa-times"></i> '+ data);
                 }
             });
+            if(uid === true && uemail === true && pd === true){
+            $('#reg #regbtn').prop('disabled', false);
+            }
+            else {
+                $('#reg #regbtn').prop('disabled', true);
+            }
         });
+        $("#reg #id_password1, #reg #id_password2").keyup(checkPasswordMatch);
     });
     </script>
 </head>
@@ -115,8 +155,17 @@
                     Welcome, {{ user }} <span><i class="fa fa-user"></i></span>
                   </button>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                      <div class="d-flex justify-content-center"><i class="fa fa-4x fa-user-circle" aria-hidden="true"></i></div>
+                      <div class="d-flex justify-content-center">
+{#                          <i class="fa fa-4x fa-user-circle" aria-hidden="true"></i>#}
+                          {% if student.myimg is NULL or student.myimg == '' %}
+                              <img class="img-fluid" src="{% static 'images/download1.jpg' %}" alt="profile photo">
+                          {% else %}
+                              <img class="img-fluid" src="{{ student.myimg_thumbnail.url }}" alt="profile photo">
+                          {% endif %}
+
+                      </div>
                       <div class="dropdown-divider"></div>
+                          <a class="dropdown-item" href="{% url 'student_edit' student.id %}">Edit profile</a>
                     <a class="dropdown-item" href="/accounts/logout/?next=/library/home">Logout</a>
                     <a class="dropdown-item" href="{% url 'auth_password_change' %}">Change Password</a>
                   </div>

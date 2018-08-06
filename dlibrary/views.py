@@ -5,9 +5,10 @@ from django.shortcuts import render
 # Create your views here.
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
-from django.views.generic import ListView, DetailView, TemplateView, CreateView
+from django.views.generic import ListView, DetailView, TemplateView, CreateView, UpdateView
 
-from dlibrary.models import Book, Feedback
+from dlibrary.forms import  SuserForm
+from dlibrary.models import Book, Feedback, Suser
 
 
 def home(request):
@@ -72,10 +73,18 @@ class BookDetail(DetailView):
     model = Book
 
 
+@method_decorator(login_required, name='dispatch')
+class StudentUpdate(UpdateView):
+    #     fields=["branch", "sem"]
+    form_class = SuserForm
+    model = Suser
+    success_url = reverse_lazy('hme')
+
+
 def chkstu(request):
     name2 = request.GET.get("name")
     if name2 is None or name2 == "":
-        return render(request, 'chkstu.html', {"err2": ""})
+        return render(request, 'chkstu.html')
     else:
         st = User.objects.filter(username=name2)
         if len(st) > 0:
@@ -87,11 +96,11 @@ def chkstu(request):
 def chkeml(request):
     email2 = request.GET.get("email")
     if email2 is None or email2 == "":
-        return render(request, 'chkeml.html', {"err3": ""})
+        return render(request, 'chkeml.html')
     else:
         st = User.objects.filter(email=email2)
         if len(st) > 0:
-            return render(request, 'chkeml.html', {"err3": "This email is already registered "})
+            return render(request, 'chkeml.html', {"err3": "This email is already registered with another username"})
         else:
             return render(request, 'chkeml.html', {"err3": ""})
 

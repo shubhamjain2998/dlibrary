@@ -1,14 +1,17 @@
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import models
-
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFill
 
 # Create your models here.
+
+
 def validate_img(upload):
     ext = upload.name[-4:]
     if not ext in ['.jpg', ".png"]:
         raise ValidationError(u'File type not supported!')
-    if upload.size > 1024 * 500:
+    if upload.size > 1024 * 1000:
         raise ValidationError(u'File too big!')
 
 
@@ -44,11 +47,14 @@ class Feedback(models.Model):
 
 class Suser(models.Model):
     name = models.CharField(max_length=100)
-    city = models.CharField(max_length=100)
-    state = models.CharField(max_length=100)
-    phone = models.CharField(max_length=100)
-    email = models.EmailField()
+    city = models.CharField(max_length=100, null=True)
+    state = models.CharField(max_length=100,null=True)
+    phone = models.IntegerField(null=True)
+    email = models.EmailField(null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    myimg = models.ImageField(upload_to="images\\", validators=[validate_img], null=True, blank=True, default='/images/images.png')
+    myimg_thumbnail = ImageSpecField(source='myimg', processors=[ResizeToFill(150, 130)], format='JPEG',
+                                     options={'quality': 60})
 
     def __str__(self):
         return self.name

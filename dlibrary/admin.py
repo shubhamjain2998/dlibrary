@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from dlibrary.models import Book, Branch, Feedback
+from dlibrary.models import Book, Branch, Feedback, Suser
 
 
 class BookAdmin(admin.ModelAdmin):
@@ -26,3 +26,9 @@ class Feedbackadmin(admin.ModelAdmin):
 
 
 admin.site.register(Feedback, Feedbackadmin)
+
+class Suseradmin(admin.ModelAdmin):
+    list_display = ["name","user","city"]
+    list_filter = ["name","user","city"]
+
+admin.site.register(Suser, Suseradmin)

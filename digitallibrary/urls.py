@@ -27,5 +27,6 @@ urlpatterns = [
     url('library/',include('dlibrary.urls')),
     url(r'^accounts/', include('registration.backends.default.urls')),
     url('^$',RedirectView.as_view(url='library')),
+    url(r'^captcha/', include('captcha.urls')),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

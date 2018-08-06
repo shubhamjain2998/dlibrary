@@ -17,6 +17,7 @@ urlpatterns = [
     url('^book/(?P<pk>[0-9]+)$', views.BookDetail.as_view(), name='bdet'),
     url('^chkstu/', views.chkstu, name="chkstu"),
     url('^chkeml/', views.chkeml, name="chkeml"),
+    url(r'^edit_student/edit/(?P<pk>\d+)$', views.StudentUpdate.as_view(), name='student_edit'),
     url('^feedback/$', views.FeedCreate.as_view(),name='feed'),
     url('^$',RedirectView.as_view(url='front')),
 ]
